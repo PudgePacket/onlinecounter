@@ -7,6 +7,7 @@ import (
 	"golang.org/x/net/websocket"
 	"io"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -163,6 +164,10 @@ func handlerGen(incoming chan interface{}) func(*websocket.Conn) {
 			// Messages coming from the server
 			case fromServer = <-thisPlayer.ch:
 				switch fromServer.(type) {
+
+				case int:
+					var countStr = strconv.Itoa(fromServer.(int))
+					ws.Write([]byte("{\"count\":" + countStr + "}"))
 
 				// This player has been assigned an ID
 				case idAssignment:
